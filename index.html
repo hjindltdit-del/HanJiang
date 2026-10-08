@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>上線測試成功</title>
+<style>
+  :root {
+    --bg1: #e0f2fe;
+    --bg2: #ede9fe;
+    --card: #ffffff;
+    --text: #1e293b;
+    --muted: #64748b;
+    --ok: #16a34a;
+    --ok-bg: #dcfce7;
+    --bad: #dc2626;
+    --bad-bg: #fee2e2;
+    --accent: #6366f1;
+    --line: #e2e8f0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg1: #0f172a;
+      --bg2: #1e1b4b;
+      --card: #1e293b;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --ok: #4ade80;
+      --ok-bg: #14532d;
+      --bad: #f87171;
+      --bad-bg: #7f1d1d;
+      --accent: #818cf8;
+      --line: #334155;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    font-family: system-ui, -apple-system, "Segoe UI", "Microsoft JhengHei", "PingFang TC", sans-serif;
+    background: linear-gradient(135deg, var(--bg1), var(--bg2));
+    color: var(--text);
+  }
+  .card {
+    width: 100%;
+    max-width: 480px;
+    background: var(--card);
+    border-radius: 20px;
+    padding: 36px 28px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    animation: rise 0.6s ease-out;
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .badge {
+    width: 84px;
+    height: 84px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    background: var(--ok-bg);
+    color: var(--ok);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 44px;
+    animation: pop 0.5s 0.3s ease-out both;
+  }
+  @keyframes pop {
+    0%   { transform: scale(0); }
+    70%  { transform: scale(1.15); }
+    100% { transform: scale(1); }
+  }
+  h1 { font-size: 26px; margin-bottom: 8px; }
+  .sub { color: var(--muted); margin-bottom: 26px; line-height: 1.6; }
+  ul { list-style: none; text-align: left; margin-bottom: 24px; }
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 4px;
+    border-bottom: 1px solid var(--line);
+    font-size: 15px;
+  }
+  li:last-child { border-bottom: none; }
+  .label { color: var(--muted); flex-shrink: 0; }
+  .val { font-weight: 600; text-align: right; word-break: break-all; }
+  .tag {
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .ok  { background: var(--ok-bg);  color: var(--ok); }
+  .bad { background: var(--bad-bg); color: var(--bad); }
+  button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.1s, opacity 0.2s;
+  }
+  button:hover { opacity: 0.9; }
+  button:active { transform: scale(0.97); }
+  .tip {
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+  <main class="card">
+    <div class="badge">✓</div>
+    <h1>網站上線成功！</h1>
+    <p class="sub">看到這個畫面，代表你的 index.html<br>已經在網路上可以瀏覽了。</p>
+
+    <ul>
+      <li><span class="label">HTML</span><span class="tag ok">正常</span></li>
+      <li><span class="label">CSS 樣式</span><span class="tag ok">正常</span></li>
+      <li><span class="label">JavaScript</span><span id="js" class="tag bad">未執行</span></li>
+      <li><span class="label">HTTPS 加密</span><span id="https" class="tag bad">檢查中</span></li>
+      <li><span class="label">目前網址</span><span id="url" class="val">—</span></li>
+      <li><span class="label">現在時間</span><span id="clock" class="val">—</span></li>
+    </ul>
+
+    <button id="btn">點我測試互動</button>
+
+    <p class="tip">想試試更新流程？改一下這個檔案的文字，<br>重新上傳覆蓋，等一兩分鐘後重新整理就會看到變化。</p>
+  </main>
+
+<script>
+  // JavaScript 能執行就把狀態改成正常
+  var js = document.getElementById('js');
+  js.textContent = '正常';
+  js.className = 'tag ok';
+
+  // 檢查是否為 HTTPS
+  var https = document.getElementById('https');
+  if (location.protocol === 'https:') {
+    https.textContent = '已啟用';
+    https.className = 'tag ok';
+  } else if (location.protocol === 'file:') {
+    https.textContent = '本機檔案';
+  } else {
+    https.textContent = '未啟用';
+  }
+
+  // 顯示目前網址
+  document.getElementById('url').textContent = location.href;
+
+  // 即時時鐘
+  function tick() {
+    document.getElementById('clock').textContent =
+      new Date().toLocaleString('zh-TW', { hour12: false });
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  // 按鈕計數
+  var count = 0;
+  var btn = document.getElementById('btn');
+  btn.addEventListener('click', function () {
+    count++;
+    btn.textContent = '已點擊 ' + count + ' 次 🎉';
+  });
+</script>
+</body>
+</html>
